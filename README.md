@@ -1,1 +1,1 @@
-# forecast-advisor-open
+# Forecast Advisor – open skeleton
