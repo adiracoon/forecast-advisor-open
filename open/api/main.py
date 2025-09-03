@@ -1,7 +1,5 @@
 import os
-os.environ.setdefault("DATABASE_URL","sqlite:///./ci.db")
 from typing import List, Optional
-import os
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import SQLModel, Session, select, create_engine
@@ -14,7 +12,7 @@ DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql+psycopg://postgres:postgres@db:5432/postgres"
 )
-engine = create_engine(os.getenv("DATABASE_URL","sqlite:///./ci.db"))
+engine = create_engine(os.getenv("DATABASE_URL", "sqlite:///./ci.db")))
 
 def get_session():
     with Session(engine) as session:
