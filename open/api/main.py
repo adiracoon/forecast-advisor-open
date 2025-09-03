@@ -1,8 +1,10 @@
+from typing import List
 from fastapi import FastAPI, HTTPException, Query
 from math import radians, sin, cos, asin, sqrt
 from open.adapters.geocoding import geocode_city
 from open.adapters.weather import daily_weather
 
+_db = []
 app = FastAPI()
 
 @app.get("/health")
@@ -48,3 +50,25 @@ async def search(origin: str, dest: str, start: str, end: str):
 @app.get("/ping")
 async def ping():
     return {"pong": True}
+@app.get("/")
+async def root():
+    return {"name": "forecast-advisor-open", "status": "ok"}
+
+from .models import Forecast
+
+@app.post("/forecasts", response_model=Forecast, status_code=201)
+async def create_forecast(f: Forecast):
+    f.id = len(_db) + 1
+    _db.append(f)
+    return f
+
+@app.get("/forecasts", response_model=list[Forecast])
+async def list_forecasts():
+    return _db
+
+@app.get("/forecasts/{fid}", response_model=Forecast)
+async def get_forecast(fid: int):
+    for f in _db:
+        if f.id == fid:
+            return f
+    raise HTTPException(status_code=404, detail="not found")
