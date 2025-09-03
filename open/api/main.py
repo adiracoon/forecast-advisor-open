@@ -1,3 +1,4 @@
+import os
 os.environ.setdefault("DATABASE_URL","sqlite:///./ci.db")
 from typing import List, Optional
 import os
