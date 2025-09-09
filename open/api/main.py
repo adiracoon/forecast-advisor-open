@@ -39,3 +39,7 @@ async def get_forecast(fid: int, session: Session = Depends(get_session)):
     if not f:
         raise HTTPException(status_code=404, detail="not found")
     return f
+
+@app.get("/api/ping")
+def ping():
+    return {"ok": True, "service": "forecast-advisor"}
